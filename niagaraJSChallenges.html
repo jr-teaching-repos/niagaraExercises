@@ -43,6 +43,15 @@
             // can the third parameter be optional (default to 1)?
             // can you create a range in reverse order? i.e. `range(5,2)
 
+            function arrayCounter(min, max, countBy = 1) {
+                var array = [];
+                for (var i = min; i < max; i += countBy ) {
+                    array.push(i);
+                }
+                return array;
+            }
+
+            console.log(arrayCounter(2,10,2));
 
 
 
@@ -53,19 +62,69 @@
             // > getCount([6, 7, 4, 4])
             // {6: 1, 7: 1, 4: 2}
 
+            function objectTransform(array) {
+                var transformedObject = {};
+                var count;
+                array.forEach(function(element, index, array){
+                    count = 0;
+                    for (var i = 0; i < array.length; i++) {
+                        if (array[i] == element)
+                            count++;
+                    }
+                    transformedObject[element] = count;
+                });
+                return transformedObject;
+            }
 
+            console.log(objectTransform([6,7,4,4]));
 
 
             // write a function that checks if a string is a palindrome
             // *bonus*: ignore special characters, whitespace, and casing
 
+            function reverse(s) {
+                return s.split('').reverse().join('');
+            }
 
-
+            function isPalindrome(string) {
+                var filteredString = string.replace(/[^\w\s]/gi, '');
+                return (reverse(filteredString) == filteredString);
+            }
+            console.log(isPalindrome('hannah'));
+            console.log(isPalindrome('asfdjkl'));
 
             // t9 calculator
             // write a function that accepts a string and returns the number
             // of keypresses it would take to create that string with t9
 
+            function t9Presses(string) {
+                string = string.toLowerCase();
+                var totalKeypresses = 0;
+                var keypad = [
+                        [' '],
+                        ['a', 'b', 'c'],
+                        ['d', 'e', 'f'],
+                        ['g', 'h', 'i'],
+                        ['j', 'k', 'l'],
+                        ['m', 'n', 'o'],
+                        ['p', 'q', 'r', 's'],
+                        ['t', 'u', 'v'],
+                        ['w','x', 'y', 'z']
+                    ];
+                var inputArray = string.split('');
+                inputArray.forEach(function(element, index, array) {
+                    for (var i = 0; i < keypad.length; i++) {
+                        for (var j = 0; j < keypad[i].length; j++) {
+                            if (element == keypad[i][j]) {
+                                totalKeypresses += j + 1;
+                            }
+                        }
+                    }
+                });
+                return totalKeypresses;
+            }
+
+            console.log(t9Presses('cat'));
 
 
 
