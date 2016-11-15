@@ -30,6 +30,15 @@
 <button id="setListColor">Change List Color</button>
 <button id="setSubParagraph">Change Sub-Para</button>
 
+<h2 id="time"><span id="minutes"></span>:<span id="seconds"></span>:<span id="mil"></span></h2>
+
+<button id="start">Start Timer!</button>
+<button id="pause">Pause</button>
+<button id="reset">Reset</button>
+
+<!--<button id="slower">Slower</button>-->
+<!--<button id="faster">Faster</button>-->
+
 <script>
     (function() {
         "use strict";
@@ -50,7 +59,6 @@
 
         // TODO: Uncomment the next line and get all elements with class name sub-paragraph
         var subParagraphs = document.getElementsByClassName('sub-paragraph');
-
 
         setHeader.addEventListener('click', function() {
             // TODO: Set inner html of mainHeader to "JavaScript is Cool"
@@ -78,6 +86,50 @@
         setSubParagraph.addEventListener('click', function() {
             // TODO: Change the text in the first sub paragraph to "Mission Accomplished!"
             subParagraphs[0].innerHTML = 'Mission Accomplished';
+        });
+
+        var timerDisplay = document.getElementById('time');
+        var minutesDisplay = document.getElementById('minutes');
+        var secondsDisplay = document.getElementById('seconds');
+        var milDisplay = document.getElementById('mil');
+
+        var buttons = {
+            startBtn: document.getElementById('start'),
+            pauseBtn: document.getElementById('pause'),
+            resetBtn: document.getElementById('reset')
+        };
+
+        var period = 1;
+        var currentTimer = false;
+        var originalTime = 0;
+        var timer = originalTime;
+
+        function pause() {
+            clearInterval(currentTimer);
+            currentTimer = false;
+            console.log('PAUSE');
+        }
+
+        function countDown() {
+            console.log('countDown Fired');
+            if (currentTimer == false) {
+                console.log('passed if condition');
+                currentTimer = setInterval(function () {
+                    timer += 1;
+                    minutesDisplay.innerText = (timer);
+                    secondsDisplay.innerText = (timer);
+                    milDisplay.innerText = (timer);
+                }, period);
+            }
+        }
+
+        buttons.startBtn.addEventListener('click', countDown);
+        buttons.pauseBtn.addEventListener('click', pause);
+        buttons.resetBtn.addEventListener('click', function() {
+            timer = originalTime;
+            minutesDisplay.innerText = originalTime;
+            secondsDisplay.innerText = originalTime;
+            milDisplay.innerText = originalTime;
         });
 
     })();
