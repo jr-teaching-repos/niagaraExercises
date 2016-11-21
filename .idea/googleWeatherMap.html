@@ -23,7 +23,7 @@
         // Set our map options
         var mapOptions = {
             // Set the zoom level
-            zoom: 18,
+            zoom: 12,
 
             // This sets the center of the map at our location
             center: {
@@ -42,61 +42,70 @@
         // Set our address to geocode
         var address = "136 E Grayson St, San Antonio, TX 78215";
 
-        // Init geocoder object
-        var geocoder = new google.maps.Geocoder();
+        var leastFavoriteFoodPlaces = [
+            {
+                position: "2922 Blanco Rd, San Antonio, TX 78212",
+                content: "Yuck, McDonalds."
+            },
+            {
+                position: "4445 W Commerce St, San Antonio, TX 78237",
+                content: "Yuck, Wendy's."
+            },
+            {
+                position: "811 San Pedro Ave, San Antonio, TX 78212",
+                content: "Yuck, Sonic."
+            },
+        ];
 
-        // Geocode our address
-        geocoder.geocode({ "address": address }, function(results, status) {
+        leastFavoriteFoodPlaces.forEach(function(element, index, array){
+            // Init geocoder object
+            var geocoder = new google.maps.Geocoder();
 
-            var place = results[0].geometry.location;
-            // Check for a successful result
-            if (status == google.maps.GeocoderStatus.OK) {
+            address = element.position;
 
-                console.log(place);
-                // Recenter the map over the address
-                map.setCenter(place);
+            // Geocode our address
+            geocoder.geocode({ "address": address }, function(results, status) {
 
-                // Create lat and long for our marker position
-                var supper = place;
+                var place = results[0].geometry.location;
+                // Check for a successful result
+                if (status == google.maps.GeocoderStatus.OK) {
 
-                // Add the marker to our existing map
-                var marker = new google.maps.Marker({
-                    position: supper,
-                    animation: google.maps.Animation.DROP,
-                    map: map
-                });
+                    // Create lat and long for our marker position
+                    var supper = place;
 
-                // Create a new infoWindow object with content
-                var infowindow = new google.maps.InfoWindow({
-                    content: "<h1>The <em>best</em> supper in town!</h1> <br> <img height='183' src='http://www.thehotelemma.com/images/uploads/39/supper_ext.jpg'>"
-                });
+                    // Add the marker to our existing map
+                    var marker = new google.maps.Marker({
+                        position: supper,
+                        animation: google.maps.Animation.DROP,
+                        map: map
+                    });
 
-                // Open the window using our map and marker
+                    // Create a new infoWindow object with content
+                    var infowindow = new google.maps.InfoWindow({
+                        content: element.content
+                    });
 
+                    // Open the window using our map and marker
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
 
-                marker.addListener('click', function() {
-                    infowindow.open(map, marker);
-                });
+                } else {
 
-
-
-            } else {
-
-                // Show an error message with the status if our request fails
-                alert("Geocoding was not successful - STATUS: " + status);
-            }
+                    // Show an error message with the status if our request fails
+                    alert("Geocoding was not successful - STATUS: " + status);
+                }
 
             });
+        });
 
-            function toggleBounce() {
-                if (marker.getAnimation() !== null) {
-                    marker.setAnimation(null);
-                } else {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                }
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
             }
-
-
+        }
 
     })();
 </script>
